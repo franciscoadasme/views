@@ -1,0 +1,14 @@
+name: views
+version: 0.1.0
+
+authors:
+  - Francisco Adasme <francisco.adasme@gmail.com>
+
+crystal: 1.4.1
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 1.0.0
+
+license: MIT
