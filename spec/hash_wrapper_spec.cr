@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-class CustomHash(K, V)
+private class CustomHash(K, V)
   include HashWrapper(K, V)
 end
 

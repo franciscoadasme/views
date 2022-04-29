@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-class Table
+private class Table
   include HashWrapper::Mutable(String, Int32)
 end
 

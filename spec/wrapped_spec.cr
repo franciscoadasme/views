@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-struct CustomArray
+private struct CustomArray
   include Wrapper(Array(Int32))
 end
 
