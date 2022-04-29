@@ -22,55 +22,55 @@ module ArrayWrapper(T)
   delegate compact, each_repeated_permutation, flatten, index,
     remaining_capacity, repeated_permutations, size, unsafe_fetch, to_a,
     to_s, transpose,
-    to: @arr
+    to: @wrapped
 
-  def initialize(@arr : Array(T) = [] of T)
+  def initialize(@wrapped : Array(T) = [] of T)
   end
 
   {% for op in %w(| & + - *) %}
     # Returns the wrapped result of calling `Array#{{op}}(rhs)` on the
     # encompassed array.
     def {{op.id}}(rhs : Indexable(T) | self) : self
-      wrap @arr {{op.id}} rhs.to_a
+      wrap @wrapped {{op.id}} rhs.to_a
     end
   {% end %}
 
   def <=>(rhs : Indexable(T)) : Int32
-    @arr <=> rhs
+    @wrapped <=> rhs
   end
 
   def <=>(rhs : self) : Int32
-    @arr <=> rhs.to_a
+    @wrapped <=> rhs.to_a
   end
 
   # Returns the wrapped result of calling `Array#[](start, count)` on
   # the encompassed array.
   def [](start : Int, count : Int) : self
-    wrap @arr[start, count]
+    wrap @wrapped[start, count]
   end
 
   # Returns the wrapped result of calling `Array#[](range)` on the
   # encompassed array.
   def [](range : Range(Int, Int)) : self
-    wrap @arr[range]
+    wrap @wrapped[range]
   end
 
   # Returns the wrapped result of calling `Array#[]?(start, count)` on
   # the encompassed array.
   def []?(start : Int, count : Int) : self?
-    wrap @arr[start, count]?
+    wrap @wrapped[start, count]?
   end
 
   # Returns the wrapped result of calling `Array#[]?(range)` on the
   # encompassed array.
   def []?(range : Range(Int, Int)) : self?
-    wrap @arr[range]?
+    wrap @wrapped[range]?
   end
 
   # Invokes `Array#[]each_slice(n, reuse)` on the encompassed array,
   # yielding a wrapped array each time.
   def each_slice(n : Int, reuse : Array(T) | Bool = false, & : self ->) : Nil
-    @arr.each_slice(n, reuse) do |slice|
+    @wrapped.each_slice(n, reuse) do |slice|
       yield wrap(slice)
     end
   end
@@ -78,13 +78,13 @@ module ArrayWrapper(T)
   # Returns the wrapped result of calling `Array#first(count)` on the
   # encompassed array.
   def first(count : Int) : self
-    wrap @arr.first(count)
+    wrap @wrapped.first(count)
   end
 
   # Returns the result of calling `Array#group_by(&)` on the encompassed
   # array with the hash's values wrapped.
   def group_by(& : T -> U) : Hash(U, self) forall U
-    @arr.group_by { |ele| yield ele }.transform_values { |ary| wrap(ary) }
+    @wrapped.group_by { |ele| yield ele }.transform_values { |ary| wrap(ary) }
   end
 
   def inspect(io : IO) : Nil
@@ -95,139 +95,139 @@ module ArrayWrapper(T)
   # Returns the wrapped result of calling `Array#last(count)` on the
   # encompassed array.
   def last(count : Int) : self
-    wrap @arr.last(count)
+    wrap @wrapped.last(count)
   end
 
   # Returns the result of calling `Array#map(&)` on the encompassed
   # array, wrapping the result if it's of the same type.
   def map(& : T -> U) : Array(U) forall U
-    wrap @arr.map { |ele| yield ele }
+    wrap @wrapped.map { |ele| yield ele }
   end
 
   # Returns the result of calling `Array#map_with_index(offset, &)` on
   # the encompassed array, wrapping the result if it's of the same type.
   def map_with_index(offset : Int = 0, & : T -> U) : Array(U) forall U
-    wrap @arr.map_with_index { |ele, i| yield ele, i }
+    wrap @wrapped.map_with_index { |ele, i| yield ele, i }
   end
 
   # Returns the wrapped result of calling `Array#partition(&)` on the
   # encompassed array.
   def partition(& : T -> _) : Tuple(self, self)
-    @arr.partition { |ele| yield ele }.map { |ary| wrap(ary) }
+    @wrapped.partition { |ele| yield ele }.map { |ary| wrap(ary) }
   end
 
   # Returns the wrapped result of calling `Array#reject(&)` on the
   # encompassed array.
   def reject(& : T -> _) : self
-    wrap @arr.reject { |ele| yield ele }
+    wrap @wrapped.reject { |ele| yield ele }
   end
 
   # Returns the wrapped result of calling `Array#reject(value)` on the
   # encompassed array.
   def reject(value) : self
-    wrap @arr.reject(value)
+    wrap @wrapped.reject(value)
   end
 
   # Returns the wrapped result of calling `Array#reverse` on the
   # encompassed array.
   def reverse : self
-    wrap @arr.reverse
+    wrap @wrapped.reverse
   end
 
   # Returns the wrapped result of calling `Array#rotate(n)` on the
   # encompassed array.
   def rotate(n : Int = 1) : self
-    wrap @arr.rotate(n)
+    wrap @wrapped.rotate(n)
   end
 
   # Returns the wrapped result of calling `Array#sample(n, random)` on
   # the encompassed array.
   def sample(n : Int, random = Random::DEFAULT) : self
-    wrap @arr.sample(n, random)
+    wrap @wrapped.sample(n, random)
   end
 
   # Returns the wrapped result of calling `Array#select(&)` on the
   # encompassed array.
   def select(& : T -> _) : self
-    wrap @arr.select { |ele| yield ele }
+    wrap @wrapped.select { |ele| yield ele }
   end
 
   # Returns the wrapped result of calling `Array#select(value)` on the
   # encompassed array.
   def select(value) : self
-    wrap @arr.select(value)
+    wrap @wrapped.select(value)
   end
 
   # Returns the wrapped result of calling `Array#shuffle(random)` on the
   # encompassed array.
   def shuffle(random : Random = Random::DEFAULT) : self
-    wrap @arr.shuffle(random)
+    wrap @wrapped.shuffle(random)
   end
 
   # Returns the wrapped result of calling `Array#skip(count)` on the
   # encompassed array.
   def skip(count : Int) : self
-    wrap @arr.skip(count)
+    wrap @wrapped.skip(count)
   end
 
   # Returns the wrapped result of calling `Array#skip_while(&)` on the
   # encompassed array.
   def skip_while(& : T -> _) : self
-    wrap @arr.skip_while { |ele| yield ele }
+    wrap @wrapped.skip_while { |ele| yield ele }
   end
 
   # Returns the wrapped result of calling `Array#sort` on the
   # encompassed array.
   def sort : self
-    wrap @arr.sort
+    wrap @wrapped.sort
   end
 
   # Returns the wrapped result of calling `Array#sort(&)` on the
   # encompassed array.
   def sort(& : T, T -> U) : self forall U
-    wrap @arr.sort { |a, b| yield a, b }
+    wrap @wrapped.sort { |a, b| yield a, b }
   end
 
   # Returns the wrapped result of calling `Array#sort_by(&)` on the
   # encompassed array.
   def sort_by(& : T -> U) : self forall U
-    wrap @arr.sort_by { |ele| yield ele }
+    wrap @wrapped.sort_by { |ele| yield ele }
   end
 
   # Returns the wrapped result of calling `Array#take_while(&)` on the
   # encompassed array.
   def take_while(& : T -> _) : self
-    wrap @arr.take_while { |ele| yield ele }
+    wrap @wrapped.take_while { |ele| yield ele }
   end
 
   # Returns the wrapped result of calling `Array#uniq` on the
   # encompassed array.
   def uniq : self
-    wrap @arr.uniq
+    wrap @wrapped.uniq
   end
 
   # Returns the wrapped result of calling `Array#uniq(&)` on the
   # encompassed array.
   def uniq(& : T ->) : self
-    wrap @arr.uniq { |ele| yield ele }
+    wrap @wrapped.uniq { |ele| yield ele }
   end
 
   # Returns the wrapped result of calling `Array#unstable_sort` on the
   # encompassed array.
   def unstable_sort : self
-    wrap @arr.unstable_sort
+    wrap @wrapped.unstable_sort
   end
 
   # Returns the wrapped result of calling `Array#unstable_sort(&)` on
   # the encompassed array.
   def unstable_sort(& : T, T -> U) : self forall U
-    wrap @arr.unstable_sort { |a, b| yield a, b }
+    wrap @wrapped.unstable_sort { |a, b| yield a, b }
   end
 
   # Returns the wrapped result of calling `Array#unstable_sort_by(&)` on
   # the encompassed array.
   def unstable_sort_by(& : T -> U) : self forall U
-    wrap @arr.unstable_sort_by { |ele| yield ele }
+    wrap @wrapped.unstable_sort_by { |ele| yield ele }
   end
 
   private def wrap(obj : Array(T)) : self

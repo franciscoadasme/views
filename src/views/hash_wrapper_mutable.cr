@@ -27,6 +27,8 @@ require "./wrapper"
 module HashWrapper::Mutable(K, V)
   include Wrapper(Hash(K, V))
 
+  fully_delegate
+
   def initialize(@wrapped : Hash(K, V) = {} of K => V)
   end
 

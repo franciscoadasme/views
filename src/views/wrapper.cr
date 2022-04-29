@@ -1,10 +1,11 @@
-# Wraps an object such that missing methods in the including type are
-# delegated to the wrapped object. Objects returned by methods will be
-# wrapped as well if the return type is the same as the original object.
+# Wraps an object such that methods are delegated to the wrapped object.
+# The return values of the methods will be wrapped as well if the return
+# type is the same as the wrapped object.
 #
 # ```
 # struct SpecialArray
 #   include Wrapper(Array(Int32))
+#   fully_delegate
 # end
 #
 # arr = [1, 2, 3, 4]
@@ -27,8 +28,48 @@ module Wrapper(T)
   def initialize(@wrapped : T = T.new)
   end
 
-  macro method_missing(call)
-    wrap(@wrapped.{{call}})
+  # Delegates missing methods to the wrapped object using the
+  # `method_missing` hook.
+  macro fully_delegate
+    macro method_missing(call)
+      wrap(@wrapped.\{{call}})
+    end
+  end
+
+  # Delegates *methods* to the enclosed object, wrapping the return
+  # value if it is of the same type as the enclosed object.
+  #
+  # ```
+  # struct CustomInt
+  #   include Wrapper(Int32)
+  #
+  #   delegate :+
+  # end
+  #
+  # val = CustomInt.new(5) + 10
+  # val.class # => CustomInt
+  # val       # => 15
+  # ```
+  macro delegate(*methods)
+    {% for method in methods %}
+      {% if method.id.ends_with?('=') && method.id != "[]=" %}
+        def {{method.id}}(arg)
+          wrap @wrapped.{{method.id}}(arg)
+        end
+      {% else %}
+        def {{method.id}}(*args, **options)
+          wrap @wrapped.{{method.id}}(*args, **options)
+        end
+
+        {% if method.id != "[]=" %}
+          def {{method.id}}(*args, **options)
+            wrap @wrapped.{{method.id}}(*args, **options) { |*yield_args|
+              yield *yield_args
+            }
+          end
+        {% end %}
+      {% end %}
+    {% end %}
   end
 
   def ==(rhs : T) : Bool
@@ -43,16 +84,16 @@ module Wrapper(T)
     @wrapped.to_s io
   end
 
-  private def wrap(hash : T) : self
-    if hash.same?(@wrapped)
+  private def wrap(obj : T) : self
+    if obj.responds_to?(:same) && obj.same?(@wrapped)
       self
     else
-      self.class.new(hash)
+      self.class.new(obj)
     end
   end
 
-  private def wrap(object)
-    object
+  private def wrap(obj)
+    obj
   end
 
   # Returns the wrapped object.
