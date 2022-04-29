@@ -72,11 +72,6 @@ module HashWrapper(K, V)
     wrap @hash.select { |k, v| yield k, v }
   end
 
-  # Returns the wrapped hash.
-  def to_h : Hash(K, V)
-    @hash
-  end
-
   private def wrap(hash : Hash(K, V)) : self
     self.class.new hash
   end
