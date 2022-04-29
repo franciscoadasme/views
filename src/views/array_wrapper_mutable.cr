@@ -28,9 +28,6 @@ module ArrayWrapper::Mutable(T)
   include Indexable::Mutable(T)
   include ArrayWrapper(T)
 
-  delegate :<<, :[]=, clear, compact!, concat, delete,
-    delete_at, fill, insert, map!, map_with_index!, pop, push, reject!,
-    replace, reverse!, rotate!, select!, shift, shuffle!, sort!,
-    sort_by!, swap, truncate, uniq!, unsafe_put, unshift,
-    unstable_sort!, unstable_sort_by!, update
+  delegate :unsafe_put
+  fully_delegate
 end
