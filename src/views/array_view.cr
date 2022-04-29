@@ -17,31 +17,23 @@ struct ArrayView(T)
   include Indexable(T)
   include Comparable(Indexable(T))
 
+  delegate :|, :&, :+, :-, :*, :<=>, :[], :[]?, compact,
+    each_repeated_permutation, first, flatten, index, last, map,
+    map_with_index, reject, remaining_capacity, repeated_permutations,
+    reverse, rotate, sample, :select, shuffle, size, skip, skip_while,
+    sort, sort_by, take_while, uniq, unsafe_fetch, unstable_sort,
+    unstable_sort_by, to_a, to_s, transpose,
+    to: @arr
+
   def initialize(@arr : Array(T))
   end
 
-  def <=>(rhs : Indexable(T)) : Int32
-    @arr <=> rhs
+  def <=>(rhs : self) : Int32
+    @arr <=> rhs.to_a
   end
 
   def inspect(io : IO) : Nil
     io << self.class.name.partition('(')[0]
     to_s io
-  end
-
-  def size : Int
-    @arr.size
-  end
-
-  def to_a : Array(T)
-    @arr
-  end
-
-  def to_s(io : IO) : Nil
-    @arr.to_s io
-  end
-
-  def unsafe_fetch(index : Int) : T
-    @arr.unsafe_fetch(index)
   end
 end
