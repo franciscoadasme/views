@@ -25,7 +25,7 @@ struct ArrayView(T)
   end
 
   def inspect(io : IO) : Nil
-    io << "ArrayView"
+    io << self.class.name.partition('(')[0]
     to_s io
   end
 
