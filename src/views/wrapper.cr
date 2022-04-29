@@ -72,16 +72,14 @@ module Wrapper(T)
     {% end %}
   end
 
+  delegate pretty_print, to_s
+
   def ==(rhs : T) : Bool
     @wrapped == rhs
   end
 
   def ==(rhs : self) : Bool
     @wrapped == rhs.wrapped
-  end
-
-  def to_s(io : IO) : Nil
-    @wrapped.to_s io
   end
 
   private def wrap(obj : T) : self
