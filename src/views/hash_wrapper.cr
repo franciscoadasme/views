@@ -1,5 +1,5 @@
 # Wraps a `Hash` object. The including type will behave as a read-only
-# hash, where ojects returned by methods will be wrapped as well if the
+# hash, where objects returned by methods will be wrapped as well if the
 # return type is the same as the original hash.
 #
 # ```
@@ -7,11 +7,11 @@
 #   include HashWrapper(String, Int32)
 # end
 #
-# table = Table.new {"a" => 1, "b" => 2}
-# table["a"]? # => 1
-# table["b"]? # => 2
-# table["c"]? # => nil
-# table["c"] = 3 # does not compile
+# table = Table.new({"a" => 1, "b" => 2})
+# table["a"]?                   # => 1
+# table["b"]?                   # => 2
+# table["c"]?                   # => nil
+# table["c"] = 3                # does not compile
 # table.select { |_, v| v > 2 } # => Table{"b" => 2}
 # ```
 module HashWrapper(K, V)
