@@ -1,3 +1,5 @@
+require "./wrapper"
+
 # Wraps a `Hash` object. The including type will behave as a read-only
 # hash, where objects returned by methods will be wrapped as well if the
 # return type is the same as the original hash.
@@ -17,24 +19,17 @@
 module HashWrapper(K, V)
   include Enumerable({K, V})
   include Iterable({K, V})
+  include Wrapper(Hash(K, V))
 
   delegate :[], :[]?, compact, dig, dig?, each, each_key, each_value,
     empty?, fetch, first_key, first_key?, first_value, first_value?,
     has_key?, has_value?, invert, key_for, key_for?, keys, last_key,
     last_key?, last_value, last_value?, pretty_print, proper_subset_of?,
-    proper_superset_of?, size, subset_of?, superset_of?, to_a, to_h,
-    to_s, transform_keys, transform_values, values, values_at,
-    to: @hash
+    proper_superset_of?, reject, :select, size, subset_of?,
+    superset_of?, to_a, to_s, transform_keys, transform_values, values,
+    values_at
 
-  def initialize(@hash : Hash(K, V) = {} of K => V)
-  end
-
-  def ==(rhs : Hash(K, V)) : Bool
-    @hash == rhs
-  end
-
-  def ==(rhs : self) : Bool
-    @hash == rhs.to_h
+  def initialize(@wrapped : Hash(K, V) = {} of K => V)
   end
 
   def inspect(io : IO) : Nil
@@ -42,37 +37,8 @@ module HashWrapper(K, V)
     to_s io
   end
 
-  # Returns the wrapped result of calling `Hash#reject(keys)`.
-  def reject(keys : Enumerable(K)) : self
-    wrap @hash.reject(keys)
-  end
-
-  # Returns the wrapped result of calling `Hash#reject(*keys)`.
-  def reject(*keys : K) : self
-    wrap @hash.reject(*keys)
-  end
-
-  # Returns the wrapped result of calling `Hash#reject(&)`.
-  def reject(& : K, V -> _) : self
-    wrap @hash.reject { |k, v| yield k, v }
-  end
-
-  # Returns the wrapped result of calling `Hash#select(keys)`.
-  def select(keys : Enumerable(K)) : self
-    wrap @hash.select(keys)
-  end
-
-  # Returns the wrapped result of calling `Hash#select(*keys)`.
-  def select(*keys : K) : self
-    wrap @hash.select(*keys)
-  end
-
-  # Returns the wrapped result of calling `Hash#select(&)`.
-  def select(& : K, V -> _) : self
-    wrap @hash.select { |k, v| yield k, v }
-  end
-
-  private def wrap(hash : Hash(K, V)) : self
-    self.class.new hash
+  # Returns the wrapped hash.
+  def to_h : Hash(K, V)
+    @wrapped
   end
 end

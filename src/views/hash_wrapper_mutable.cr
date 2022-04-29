@@ -1,4 +1,4 @@
-require "./wrapper"
+require "./hash_wrapper"
 
 # Wraps a `Hash` object. The including type will behave as a hash, where
 # objects returned by methods will be wrapped as well if the return type
@@ -25,15 +25,10 @@ require "./wrapper"
 # table.keys # => ["a"]
 # ```
 module HashWrapper::Mutable(K, V)
-  include Wrapper(Hash(K, V))
+  include HashWrapper(K, V)
 
   fully_delegate
 
   def initialize(@wrapped : Hash(K, V) = {} of K => V)
-  end
-
-  def inspect(io : IO) : Nil
-    io << self.class.name.partition('(')[0]
-    to_s io
   end
 end
