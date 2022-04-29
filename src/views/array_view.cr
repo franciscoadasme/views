@@ -2,8 +2,8 @@
 # give access to a non-modifiable array in a type-safe manner.
 #
 # The functionality of `ArrayView` is limited by design, as it just
-# delegates the methods defined by the `Indexable` mixin to the
-# encompassed array.
+# delegates the methods defined by the `Indexable` mixin to the enclosed
+# array.
 #
 # ```
 # arr = ArrayView.new([1, 2, 3, 4])

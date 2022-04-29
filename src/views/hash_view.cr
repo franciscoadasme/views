@@ -4,7 +4,7 @@ require "./hash_wrapper"
 # give access to a non-modifiable hash in a type-safe manner.
 #
 # The functionality of `HashView` is limited by design, as it just
-# delegates the non-writable methods to the encompassed hash.
+# delegates the non-writable methods to the enclosed hash.
 #
 # ```
 # arr = HashView.new({"a" => 1, "b" => 2})

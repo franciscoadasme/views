@@ -36,7 +36,7 @@ module ArrayWrapper(T)
     @wrapped <=> rhs.to_a
   end
 
-  # Invokes `Array#[]each_slice(n, reuse)` on the encompassed array,
+  # Invokes `Array#[]each_slice(n, reuse)` on the enclosed array,
   # yielding a wrapped array each time.
   def each_slice(n : Int, reuse : Array(T) | Bool = false, & : self ->) : Nil
     @wrapped.each_slice(n, reuse) do |slice|
@@ -44,7 +44,7 @@ module ArrayWrapper(T)
     end
   end
 
-  # Returns the result of calling `Array#group_by(&)` on the encompassed
+  # Returns the result of calling `Array#group_by(&)` on the enclosed
   # array with the hash's values wrapped.
   def group_by(& : T -> U) : Hash(U, self) forall U
     @wrapped.group_by { |ele| yield ele }.transform_values { |ary| wrap(ary) }
@@ -56,7 +56,7 @@ module ArrayWrapper(T)
   end
 
   # Returns the wrapped result of calling `Array#partition(&)` on the
-  # encompassed array.
+  # enclosed array.
   def partition(& : T -> _) : Tuple(self, self)
     @wrapped.partition { |ele| yield ele }.map { |ary| wrap(ary) }
   end
