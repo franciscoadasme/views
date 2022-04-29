@@ -24,10 +24,10 @@ module HashWrapper(K, V)
   delegate :[], :[]?, compact, dig, dig?, each, each_key, each_value,
     empty?, fetch, first_key, first_key?, first_value, first_value?,
     has_key?, has_value?, invert, key_for, key_for?, keys, last_key,
-    last_key?, last_value, last_value?, pretty_print, proper_subset_of?,
-    proper_superset_of?, reject, :select, size, subset_of?,
-    superset_of?, to_a, to_s, transform_keys, transform_values, values,
-    values_at
+    last_key?, last_value, last_value?, merge,
+    proper_subset_of?, proper_superset_of?, reject, :select, size,
+    subset_of?, superset_of?, to_a, to_s, transform_keys,
+    transform_values, values, values_at
 
   def initialize(@wrapped : Hash(K, V) = {} of K => V)
   end
