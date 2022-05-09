@@ -1,10 +1,10 @@
 require "./spec_helper"
 
 private class CustomArray(T)
-  include ArrayWrapper::Mutable(T)
+  include Array::MutableWrapper(T)
 end
 
-describe ArrayWrapper::Mutable do
+describe Array::MutableWrapper do
   it "accesses to array" do
     arr = CustomArray.new([1, 2, 3, 4])
     arr.size.should eq 4

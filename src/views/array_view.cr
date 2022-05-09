@@ -13,7 +13,7 @@
 # arr.select! &.even? # does not compile
 # arr.sort            # does not compile
 # ```
-struct ArrayView(T)
+struct Array::View(T)
   include Indexable(T)
   include Comparable(Indexable(T))
 

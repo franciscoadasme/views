@@ -1,10 +1,10 @@
 require "./spec_helper"
 
 private class CustomHash(K, V)
-  include HashWrapper(K, V)
+  include Hash::Wrapper(K, V)
 end
 
-describe HashWrapper do
+describe Hash::Wrapper do
   it "access to hash" do
     view = CustomHash.new({"a" => 1, "b" => 2})
     view.size.should eq 2

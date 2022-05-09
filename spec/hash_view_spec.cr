@@ -1,8 +1,8 @@
 require "./spec_helper"
 
-describe HashView do
+describe Hash::View do
   it "access to hash" do
-    view = HashView.new({"a" => 1, "b" => 2})
+    view = Hash::View.new({"a" => 1, "b" => 2})
     view.size.should eq 2
     view.keys.should eq %w(a b)
     view["a"]?.should eq 1
@@ -12,15 +12,15 @@ describe HashView do
 
   describe "#inspect" do
     it "returns the string representation" do
-      expected = %(HashView{"a" => 1, "b" => 2})
-      HashView.new({"a" => 1, "b" => 2}).inspect.should eq expected
+      expected = %(Hash::View{"a" => 1, "b" => 2})
+      Hash::View.new({"a" => 1, "b" => 2}).inspect.should eq expected
     end
   end
 
   describe "#to_h" do
     it "returns the wrapped hash" do
       hash = {"a" => 1, "b" => 2}
-      HashView.new(hash).to_h.should be hash
+      Hash::View.new(hash).to_h.should be hash
     end
   end
 end

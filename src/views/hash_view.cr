@@ -14,7 +14,7 @@ require "./hash_wrapper"
 # arr.select! "b" # does not compile
 # arr["c"] = 3    # does not compile
 # ```
-struct HashView(K, V)
+struct Hash::View(K, V)
   include Enumerable({K, V})
   include Iterable({K, V})
 

@@ -17,10 +17,10 @@ require "./wrapper"
 # arr.select(&.even?).class # => CustomArray(Int32)
 # arr.select!(&.even?)      # does not compile
 # ```
-module ArrayWrapper(T)
+module Array::Wrapper(T)
   include Comparable(Indexable(T))
   include Indexable(T)
-  include Wrapper(Array(T))
+  include ::Wrapper(Array(T))
 
   delegate :|, :&, :+, :-, :*, :<=>, :[], :[]?, compact,
     each_repeated_permutation, first, flatten, index, last, map,

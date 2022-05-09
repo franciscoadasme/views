@@ -24,8 +24,8 @@ require "./hash_wrapper"
 # table.select!("a")
 # table.keys # => ["a"]
 # ```
-module HashWrapper::Mutable(K, V)
-  include HashWrapper(K, V)
+module Hash::MutableWrapper(K, V)
+  include Hash::Wrapper(K, V)
 
   fully_delegate
 

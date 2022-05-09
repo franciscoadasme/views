@@ -24,9 +24,9 @@ require "./array_wrapper"
 # arr.select!(&.<(3))
 # arr # => [-1, 2, -4]
 # ```
-module ArrayWrapper::Mutable(T)
+module Array::MutableWrapper(T)
   include Indexable::Mutable(T)
-  include ArrayWrapper(T)
+  include Array::Wrapper(T)
 
   delegate :unsafe_put
   fully_delegate

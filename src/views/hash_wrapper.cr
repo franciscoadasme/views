@@ -16,10 +16,10 @@ require "./wrapper"
 # table["c"] = 3                # does not compile
 # table.select { |_, v| v > 2 } # => Table{"b" => 2}
 # ```
-module HashWrapper(K, V)
+module Hash::Wrapper(K, V)
   include Enumerable({K, V})
   include Iterable({K, V})
-  include Wrapper(Hash(K, V))
+  include ::Wrapper(Hash(K, V))
 
   delegate :[], :[]?, compact, dig, dig?, each, each_key, each_value,
     empty?, fetch, first_key, first_key?, first_value, first_value?,

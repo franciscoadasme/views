@@ -15,7 +15,7 @@
 # view.select! &.even? # does not compile
 # view.sort            # does not compile
 # ```
-struct IndexableView(T, U)
+struct Indexable::View(T, U)
   include Indexable(U)
   include Comparable(Indexable(U))
 

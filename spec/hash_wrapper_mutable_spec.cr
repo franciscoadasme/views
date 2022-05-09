@@ -1,10 +1,10 @@
 require "./spec_helper"
 
 private class Table
-  include HashWrapper::Mutable(String, Int32)
+  include Hash::MutableWrapper(String, Int32)
 end
 
-describe HashWrapper::Mutable do
+describe Hash::MutableWrapper do
   it "accesses to the hash" do
     table = Table.new({"a" => 1, "b" => 2})
     table.size.should eq 2
