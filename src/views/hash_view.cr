@@ -43,3 +43,10 @@ struct Hash::View(K, V)
     to_s io
   end
 end
+
+class Hash(K, V)
+  # Returns a read-only view to the hash.
+  def view : View(K, V)
+    View.new(self)
+  end
+end

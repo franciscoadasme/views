@@ -57,3 +57,10 @@ struct Indexable::View(T, U)
     @indexable.unsafe_fetch(index)
   end
 end
+
+module Indexable(T)
+  # Returns a read-only indexable view to the collection.
+  def view : View(self, T)
+    View(typeof(self), T).new(self)
+  end
+end

@@ -24,3 +24,14 @@ describe Hash::View do
     end
   end
 end
+
+describe Hash do
+  describe "#view" do
+    it "returns a view" do
+      hash = {"a" => 1, "b" => 2}
+      view = hash.view
+      view.should be_a Hash::View(String, Int32)
+      view.to_h.should be hash
+    end
+  end
+end

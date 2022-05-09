@@ -37,3 +37,14 @@ describe Array::View do
     end
   end
 end
+
+describe Array do
+  describe "#view" do
+    it "returns a view" do
+      arr = [1, 2, 3, 4]
+      view = arr.view
+      view.should be_a Array::View(Int32)
+      view.to_a.should be arr
+    end
+  end
+end

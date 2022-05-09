@@ -33,3 +33,14 @@ describe Indexable::View do
     end
   end
 end
+
+describe Indexable do
+  describe "#view" do
+    it "returns a view" do
+      arr = StaticArray[1, 2, 3, 4]
+      view = arr.view
+      view.should be_a Indexable::View(StaticArray(Int32, 4), Int32)
+      view.should eq [1, 2, 3, 4]
+    end
+  end
+end

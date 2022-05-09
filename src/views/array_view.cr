@@ -37,3 +37,10 @@ struct Array::View(T)
     to_s io
   end
 end
+
+class Array(T)
+  # Returns a read-only view to the array.
+  def view : View(T)
+    View.new(self)
+  end
+end
